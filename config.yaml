@@ -1,0 +1,7 @@
+server:
+    port: 5280
+
+mongo:
+    host: localhost
+    port: 27017
+    database: rattest
