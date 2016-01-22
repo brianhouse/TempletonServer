@@ -10,3 +10,8 @@ pulse width is how long to buzz in ms.
 so a rhythm notation would be a list of durations and strengths
 [(500, 0.2), (250, 0.9), (250, 0.9), (250, 0.0)] etc.
 
+
+
+# big questions
+
+multiple sensors streaming accelerometer data

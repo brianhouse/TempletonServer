@@ -24,5 +24,7 @@ def send(data):
 
 if __name__ == "__main__":
     # pulses = [(1.0, 400), (0.5, 200)]
-    pulses = [(1.0, 100)]
+    pulses = [(0.2, 200), (0.0, 500), (0.4, 200), (0.0, 500), (0.6, 200), (0.0, 500), (0.8, 200), (0.0, 500), (1.0, 200), (0.0, 500)]
     send(pulses)
+
+    # note that low intensity requires a slightly longer duration (ie, (0.1, 100) wont sound)
