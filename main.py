@@ -31,39 +31,42 @@ class WebSocket(websocket.WebSocketHandler):
 
     def open(self):
         log.info("//////////// WebSocket.open")
-        socket_id = strings.random_string(10)
-        WebSocket.sockets[socket_id] = self
-        log.info("--> new socket_id %s" % socket_id)
-        WebSocket.send(socket_id, socket_id)
+        self.socket_id = strings.random_string(10)
+        WebSocket.sockets[self.socket_id] = self
+        self.device_id = None
+        log.info("--> new socket_id %s" % self.socket_id)
+        WebSocket.send(self.socket_id, {'socket_id': self.socket_id})
 
     def on_message(self, data):
         log.info("//////////// WebSocket.on_message %s" % data)
         try:
             data = json.loads(data)
-            socket_id = data['socket_id']
         except Exception as e:
             log.error(log.exc(e))
             return
-        WebSocket.send(socket_id, "OK")
+        if 'device_id' in data:
+            self.device_id = data['device_id']
+            WebSocket.send(self.socket_id, {'linked': True})
 
     def on_close(self):
         log.info("//////////// WebSocket.on_close")
-        socket_id = None
-        for sid, instance in WebSocket.sockets.items():
-            if instance == self:
-                socket_id = sid
-        log.info("--> closing socket_id %s" % socket_id)                
-        if socket_id in WebSocket.sockets:
-            del WebSocket.sockets[socket_id]
+        log.info("--> closing socket_id %s" % self.socket_id)                
+        if self.socket_id in WebSocket.sockets:
+            del WebSocket.sockets[self.socket_id]
 
     @classmethod
     def send(cls, socket_id, message):
         socket = WebSocket.sockets[socket_id]
-        log.info("--> sending [%s] to %s" % (message, socket_id))
         try:
-            socket.write_message(message)
-        except Exception as e:
-            log.error(log.exc(e))
+            message = json.dumps(message)
+        except:
+            log.error("--> message not json formatted")
+        else:
+            log.info("--> sending %s to %s" % (message, socket_id))
+            try:
+                socket.write_message(message)
+            except Exception as e:
+                log.error(log.exc(e))
 
 
 handlers = [
