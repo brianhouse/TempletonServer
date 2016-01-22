@@ -47,6 +47,13 @@ class WebSocket(websocket.WebSocketHandler):
         if 'device_id' in data:
             self.device_id = data['device_id']
             WebSocket.send(self.socket_id, {'linked': True})
+        if 'pulses' in data:
+            log.info(data)
+            WebSocket.send(self.socket_id, {'success': True})
+            for socket_id, socket in WebSocket.sockets.items():
+                if socket is self:
+                    continue
+                WebSocket.send(socket_id, data)
 
     def on_close(self):
         log.info("//////////// WebSocket.on_close")
