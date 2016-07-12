@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 from housepy import config, log
 from pymongo import MongoClient, GEOSPHERE, ASCENDING, DESCENDING
 
@@ -14,4 +15,11 @@ def make_indexes():
       log.error(log.exc(e))
 
 if __name__ == "__main__":
-  make_indexes()
+    arg = None
+    if len(sys.argv) > 1:
+        arg = sys.argv[1]
+    if arg == 'dump':
+        result = db.stream.remove()
+        log.info(result)
+    else:
+        make_indexes()
