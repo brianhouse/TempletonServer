@@ -4,7 +4,7 @@
     <title>Tagger</title>
     <script language="javascript" type="text/javascript" src="/static/js/p5.min.js"></script>    
     <script language="javascript" type="text/javascript" src="/static/js/p5.dom.js"></script>    
-    <script language="javascript" type="text/javascript" src="/static/js/sketch.js?v={{ v }}"></script>
+    <script language="javascript" type="text/javascript" src="/scripts/sketch.js?v={{ v }}"></script>
     <style type="text/css">
         html, body {
             height: 100%;
@@ -12,13 +12,36 @@
         body {
             padding: 0;
             margin: 50;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        }
+        #p5 {
+            position: relative;
+            float: left;
+        }
+        #content {
+            position: relative;            
+            float: left;
+            margin-left: 10px;
+            font: 12px monospace;
+        }
+        #content a {
+            text-decoration: none;
+            color: black;
+        }
+        #content a:hover {
+            background-color: black;
+            color: white;
         }
     </style>
 </head>
 <body>
+    <div id="p5"></div>
+    <div id="content">
+    {% for video in videos %}
+        <a href="javascript:setVideo('{{ video }}');">{{ video }}</a><br />
+    {% endfor %}
+    <br />
+    <br />
+    </div>
 </body>
 </html>
 
