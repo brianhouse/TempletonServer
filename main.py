@@ -25,20 +25,42 @@ class Home(server.Handler):
         log.info("OK")
 
 
-class WebSocket(websocket.WebSocketHandler):
+class DisplaySocket(websocket.WebSocketHandler):
 
     sockets = {}
 
     def open(self):
-        log.info("//////////// WebSocket.open")
+        log.info("//////////// DisplaySocket.open")
         self.socket_id = strings.random_string(10)
-        WebSocket.sockets[self.socket_id] = self
+        DisplaySocket.sockets[self.socket_id] = self
         self.device_id = None
-        log.info("--> new socket_id %s" % self.socket_id)
-        WebSocket.send(self.socket_id, {'socket_id': self.socket_id})
+        log.info("--> new display socket_id %s" % self.socket_id)
+        DisplaySocket.send(self.socket_id, {'socket_id': self.socket_id})
 
     def on_message(self, data):
-        log.info("//////////// WebSocket.on_message %s" % data)
+        log.info("//////////// DisplaySocket.on_message %s" % data)
+
+    def on_close(self):
+        log.info("//////////// DisplaySocket.on_close")
+        log.info("--> closing display socket_id %s" % self.socket_id)                
+        if self.socket_id in DisplaySocket.sockets:
+            del DisplaySocket.sockets[self.socket_id]
+
+
+class CollarSocket(websocket.WebSocketHandler):
+
+    sockets = {}
+
+    def open(self):
+        log.info("//////////// CollarSocket.open")
+        self.socket_id = strings.random_string(10)
+        CollarSocket.sockets[self.socket_id] = self
+        self.device_id = None
+        log.info("--> new collar socket_id %s" % self.socket_id)
+        CollarSocket.send(self.socket_id, {'socket_id': self.socket_id})
+
+    def on_message(self, data):
+        log.info("//////////// CollarSocket.on_message %s" % data)
         try:
             data = json.loads(data)
         except Exception as e:
@@ -46,26 +68,26 @@ class WebSocket(websocket.WebSocketHandler):
             return
         if 'device_id' in data:
             self.device_id = data['device_id']
-            WebSocket.send(self.socket_id, {'linked': True})
+            CollarSocket.send(self.socket_id, {'linked': True})
         if 'pulses' in data:    # relay for computer script to send pulses to connected devices
             log.info(data)
-            WebSocket.send(self.socket_id, {'success': True})
-            for socket_id, socket in WebSocket.sockets.items():
+            CollarSocket.send(self.socket_id, {'success': True})
+            for socket_id, socket in CollarSocket.sockets.items():
                 if socket is self:
                     continue
-                WebSocket.send(socket_id, data)
+                CollarSocket.send(socket_id, data)
         if 'acceleration' in data:  # we are receiving accelerometer data
             log.info(data)
 
     def on_close(self):
-        log.info("//////////// WebSocket.on_close")
-        log.info("--> closing socket_id %s" % self.socket_id)                
-        if self.socket_id in WebSocket.sockets:
-            del WebSocket.sockets[self.socket_id]
+        log.info("//////////// CollarSocket.on_close")
+        log.info("--> closing collar socket_id %s" % self.socket_id)                
+        if self.socket_id in CollarSocket.sockets:
+            del CollarSocket.sockets[self.socket_id]
 
     @classmethod
     def send(cls, socket_id, message):
-        socket = WebSocket.sockets[socket_id]
+        socket = CollarSocket.sockets[socket_id]
         try:
             message = json.dumps(message)
         except:
@@ -79,7 +101,8 @@ class WebSocket(websocket.WebSocketHandler):
 
 
 handlers = [
-    (r"/websocket", WebSocket),    
+    (r"/displaysocket", DisplaySocket),    
+    (r"/websocket", CollarSocket),    
     (r"/?([^/]*)", Home),
 ]    
 

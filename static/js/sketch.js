@@ -1,7 +1,22 @@
+var SERVER = "localhost:5280";
+
 var ratcam;
 var playing = false;
+var socket;
+var socket_id;
 
 function setup() {
+
+    socket = new WebSocket("ws://" + SERVER + "/websocket");
+    socket.onmessage = function (evt) {
+        data = JSON.parse(evt.data);
+        console.log(data);
+        if ('socket_id' in data) {
+            socket_id = data['socket_id'];
+            console.log("--> received socket_id " + socket_id);
+        }
+    };
+
     createCanvas(640, 480);
     ratcam = createVideo(["/static/video/1467738431.mov"]);
     ratcam.size(640, 480);    
@@ -9,7 +24,7 @@ function setup() {
     ratcam.hide();
     ratcam.pause();
     ratcam.volume(1);
-    button = createButton('play/pause');
+    button = createButton("play/pause");
     button.mousePressed(togglePlay);
 }
 
@@ -29,7 +44,7 @@ function draw() {
     fill(0);
     rect(0, 12, position * width, 6);
     textSize(8);
-    text(ratcam.time(), width - 50, 18);            // format this
+    text(ratcam.time(), width - 50, 18);            // util: format this
 
     // border
     noFill();    
