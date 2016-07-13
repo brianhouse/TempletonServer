@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import json
+import json, random
 from pymongo import ASCENDING
 from tornado import websocket
 from housepy import server, config, log, strings
@@ -12,7 +12,7 @@ class Home(server.Handler):
         if page == "data":
             result = list(self.db.stream.find().sort([('t_utc', ASCENDING)]))
             return self.json(result)
-        return self.text("data/")
+        return self.render("home.html", v=random.randint(0, 1000000))   # dont cache the js
 
     def post(self, nop=None):
         log.info("Home.post")

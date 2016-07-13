@@ -1,5 +1,6 @@
 server:
     port: 5280
+    cache: False
 
 mongo:
     host: localhost
