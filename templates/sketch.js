@@ -84,9 +84,13 @@ function setVideo(filename) {
         loadImage("/static/img/loading.jpg", function(img) {
             image(img, 0, 0);
         });
-        ratcam.src = ["/static/video/" + filename];
+        ratcam.src = ["/static/video/" + filename];       
+        // console.log("Loading " +  "https://s3.amazonaws.com/{{ s3_bucket }}/" + filename);
+        // ratcam.src = ["https://s3.amazonaws.com/{{ s3_bucket }}/" + filename];        
     } else {
         ratcam = createVideo(["/static/video/" + filename]);
+        // console.log("Loading " +  "https://s3.amazonaws.com/{{ s3_bucket }}/" + filename);
+        // ratcam = createVideo(["https://s3.amazonaws.com/{{ s3_bucket }}/" + filename]);
     }
     ratcam.size(640, 480);    
     ratcam.loop();

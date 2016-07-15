@@ -3,7 +3,7 @@
 import json, random, os, __main__
 from pymongo import ASCENDING
 from tornado import websocket
-from housepy import server, config, log, strings
+from housepy import server, config, log, strings, s3
 
     
 class Home(server.Handler):
@@ -14,6 +14,8 @@ class Home(server.Handler):
             result = list(self.db.stream.find().sort([('t_utc', ASCENDING)]))
             return self.json(result)
         videos = [filename for filename in os.listdir(os.path.abspath(os.path.join(os.path.dirname(__main__.__file__), "static", "video"))) if filename[-3:] == "mov"]
+        # videos = s3.list_contents()
+        # "https://s3.amazonaws.com/%s/%s.wav" % (config['s3']['bucket'], data['t'])
         return self.render("home.html", v=random.randint(0, 1000000), videos=videos)   # dont cache the js
 
     def post(self, nop=None):
@@ -32,6 +34,7 @@ class Scripts(server.Handler):
     def get(self, script=None):
         log.info("Sketch.get %s" % script)
         videos = [filename for filename in os.listdir(os.path.abspath(os.path.join(os.path.dirname(__main__.__file__), "static", "video"))) if filename[-3:] == "mov"]        
+        # videos = s3.list_contents()
         return self.render(script, server=config['url'], videos=videos)
 
 

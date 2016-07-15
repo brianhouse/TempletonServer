@@ -1,9 +1,17 @@
 server:    
     port: 5280
+    log_templates: False
 
 mongo:
     host: localhost
     port: 27017
     database: rattest
 
+s3:
+    access_key_id: AKIAIFGZJPSDD4GMYZTA
+    secret_access_key: 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
+    bucket: templeton-media
+
+
 url: localhost:5280
+
