@@ -23,7 +23,6 @@ function setup() {
     // };
 
     setVideo(VIDEOS[0]);
-    current_video = VIDEOS[0];
 
     var button = createButton("play/pause");
     button.mousePressed(togglePlay);
@@ -92,6 +91,7 @@ function setVideo(filename) {
         // console.log("Loading " +  "https://s3.amazonaws.com/{{ s3_bucket }}/" + filename);
         // ratcam = createVideo(["https://s3.amazonaws.com/{{ s3_bucket }}/" + filename]);
     }
+    current_video = filename;    
     ratcam.size(640, 480);    
     ratcam.loop();
     ratcam.hide();
