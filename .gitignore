@@ -3,3 +3,4 @@ signal_processing
 __pycache__
 graphs/*.png
 *.mov
+config.yaml
