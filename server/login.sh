@@ -1,0 +1,1 @@
+ssh -i server/tanglr.pem ubuntu@54.235.200.47
