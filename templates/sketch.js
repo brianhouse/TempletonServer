@@ -92,6 +92,7 @@ function setVideo(filename) {
         // ratcam = createVideo(["https://s3.amazonaws.com/{{ s3_bucket }}/" + filename]);
     }
     current_video = filename;    
+    $('#timefield').val(split(current_video, ".")[0]);
     ratcam.size(640, 480);    
     ratcam.loop();
     ratcam.hide();
