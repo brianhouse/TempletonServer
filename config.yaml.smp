@@ -8,9 +8,9 @@ mongo:
     database: rattest
 
 s3:
-    access_key_id: AKIAIFGZJPSDD4GMYZTA
-    secret_access_key: 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
-    bucket: templeton-media
+    access_key_id:
+    secret_access_key:
+    bucket:
 
 
 url: localhost:5280
