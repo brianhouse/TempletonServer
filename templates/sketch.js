@@ -5,6 +5,7 @@ var ratcam;
 var playing = false;
 var socket;
 var socket_id;
+var current_video;
 
 function setup() {
 
@@ -22,10 +23,15 @@ function setup() {
     // };
 
     setVideo(VIDEOS[0]);
+    current_video = VIDEOS[0];
 
     var button = createButton("play/pause");
     button.mousePressed(togglePlay);
-    button.parent("content");
+    button.parent("playpause");
+
+    $('#timefield').click(function() {
+        $(this).select();
+    });
 
     var canvas = createCanvas(640, 480);
     canvas.parent("p5");    
@@ -35,6 +41,7 @@ function draw() {
     if (mouseIsPressed) {
         if (mouseY > 10 && mouseY < 20) {
             ratcam.time((mouseX/width) * ratcam.duration());
+            $('#timefield').val(split(current_video, ".")[0] + " " + ratcam.time());
         }
     }
 
@@ -46,8 +53,13 @@ function draw() {
     rect(0, 10, width, 10);
     fill(0);
     rect(0, 12, position * width, 6);
-    textSize(8);
-    text(ratcam.time(), width - 50, 18);            // util: format this
+    // textSize(8);
+    // text(ratcam.time(), width - 50, 18);            // util: format this
+
+    // update
+    if (playing) {
+        $('#timefield').val(split(current_video, ".")[0] + " " + ratcam.time());
+    }
 
     // border
     noFill();    
@@ -69,6 +81,9 @@ function togglePlay() {
 function setVideo(filename) {
     if (ratcam != undefined) {
         ratcam.stop();
+        loadImage("/static/img/loading.jpg", function(img) {
+            image(img, 0, 0);
+        });
         ratcam.src = ["/static/video/" + filename];
     } else {
         ratcam = createVideo(["/static/video/" + filename]);

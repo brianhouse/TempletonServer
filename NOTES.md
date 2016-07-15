@@ -23,3 +23,17 @@ multiple sensors streaming accelerometer data
 
 what's up with posting instead of streaming? does that make sense?
 and shouldnt I be compressing this stuff?
+
+
+streaming data from a mongo cursor over a socket seemed like a rad idea
+
+but the video is driving this, so I think it just asks for chunks -- which gets a little cumbersome
+and I question why I'm doing this
+but I learned some stuff
+
+if you transfer data over a socket, can you do a progress bar or something?
+still, pointless.
+
+why am I doing this? this doesnt need to be a generalized solution.
+
+

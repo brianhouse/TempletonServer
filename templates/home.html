@@ -3,8 +3,10 @@
     <meta charset="UTF-8">
     <title>Tagger</title>
     <script language="javascript" type="text/javascript" src="/static/js/p5.min.js"></script>    
-    <script language="javascript" type="text/javascript" src="/static/js/p5.dom.js"></script>    
+    <script language="javascript" type="text/javascript" src="/static/js/p5.dom.js"></script>
+    <script language="javascript" type="text/javascript" src="/static/js/jquery.min.js"></script>    
     <script language="javascript" type="text/javascript" src="/scripts/sketch.js?v={{ v }}"></script>
+
     <style type="text/css">
         html, body {
             height: 100%;
@@ -41,6 +43,10 @@
     {% endfor %}
     <br />
     <br />
+    <div id="playpause"></div>
+    <br />
+    <br />
+    <input type="text" id="timefield" />
     </div>
 </body>
 </html>
