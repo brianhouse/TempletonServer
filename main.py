@@ -3,8 +3,9 @@
 import json, random, os, __main__
 from pymongo import ASCENDING
 from tornado import websocket
-from housepy import server, config, log, strings, s3
+from housepy import server, config, log, strings, s3, process
 
+process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
     
 class Home(server.Handler):
 
